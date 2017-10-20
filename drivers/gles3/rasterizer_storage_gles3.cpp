@@ -2430,9 +2430,7 @@ void RasterizerStorageGLES3::_update_material(Material *material) {
 
 		if (material->shader && material->shader->mode == VS::SHADER_SPATIAL) {
 
-			Shader::Spatial spatial = material->shader->spatial;
-			if (spatial.blend_mode == Shader::Spatial::BLEND_MODE_MIX &&
-					(!spatial.uses_alpha || (spatial.uses_alpha && spatial.depth_draw_mode == Shader::Spatial::DEPTH_DRAW_ALPHA_PREPASS))) {
+			if (!material->shader->spatial.uses_alpha && material->shader->spatial.blend_mode == Shader::Spatial::BLEND_MODE_MIX) {
 				can_cast_shadow = true;
 			}
 
