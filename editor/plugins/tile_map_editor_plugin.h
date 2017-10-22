@@ -173,7 +173,7 @@ class TileMapEditor : public VBoxContainer {
 	void _canvas_mouse_enter();
 	void _canvas_mouse_exit();
 	void _tileset_settings_changed();
-	void _icon_size_changed(float p_value);
+	void _icon_size_changed(real_t p_value);
 
 protected:
 	void _notification(int p_what);

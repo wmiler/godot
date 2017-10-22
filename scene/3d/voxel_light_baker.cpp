@@ -342,8 +342,8 @@ void VoxelLightBaker::_plot_face(int p_idx, int p_level, int p_x, int p_y, int p
 				if (lnormal == Vector3()) //just in case normal as nor provided
 					lnormal = normal;
 
-				int uv_x = CLAMP(Math::fposmod(uv.x, 1.0f) * bake_texture_size, 0, bake_texture_size - 1);
-				int uv_y = CLAMP(Math::fposmod(uv.y, 1.0f) * bake_texture_size, 0, bake_texture_size - 1);
+				int uv_x = CLAMP(Math::fposmod(uv.x, (real_t)1.0) * bake_texture_size, 0, bake_texture_size - 1);
+				int uv_y = CLAMP(Math::fposmod(uv.y, (real_t)1.0) * bake_texture_size, 0, bake_texture_size - 1);
 
 				int ofs = uv_y * bake_texture_size + uv_x;
 				albedo_accum.r += p_material.albedo[ofs].r;
@@ -373,8 +373,8 @@ void VoxelLightBaker::_plot_face(int p_idx, int p_level, int p_x, int p_y, int p
 			if (lnormal == Vector3()) //just in case normal as nor provided
 				lnormal = normal;
 
-			int uv_x = CLAMP(Math::fposmod(uv.x, 1.0f) * bake_texture_size, 0, bake_texture_size - 1);
-			int uv_y = CLAMP(Math::fposmod(uv.y, 1.0f) * bake_texture_size, 0, bake_texture_size - 1);
+			int uv_x = CLAMP(Math::fposmod(uv.x, (real_t)1.0) * bake_texture_size, 0, bake_texture_size - 1);
+			int uv_y = CLAMP(Math::fposmod(uv.y, (real_t)1.0) * bake_texture_size, 0, bake_texture_size - 1);
 
 			int ofs = uv_y * bake_texture_size + uv_x;
 
@@ -1405,7 +1405,7 @@ void VoxelLightBaker::_plot_triangle(Vector2 *vertices, Vector3 *positions, Vect
 	}
 }
 
-void VoxelLightBaker::_sample_baked_octree_filtered_and_anisotropic(const Vector3 &p_posf, const Vector3 &p_direction, float p_level, Vector3 &r_color, float &r_alpha) {
+_FORCE_INLINE_ void VoxelLightBaker::_sample_baked_octree_filtered_and_anisotropic(const Vector3 &p_posf, const Vector3 &p_direction, real_t p_level, Vector3 &r_color, real_t &r_alpha) {
 
 	int size = 1 << (cell_subdiv - 1);
 
@@ -1518,7 +1518,7 @@ void VoxelLightBaker::_sample_baked_octree_filtered_and_anisotropic(const Vector
 		}
 	}
 
-	float target_level_size = size >> target_level;
+	real_t target_level_size = size >> target_level;
 	Vector3 pos_fract[2];
 
 	pos_fract[0].x = Math::fmod(pos.x, target_level_size) / target_level_size;
@@ -1531,7 +1531,7 @@ void VoxelLightBaker::_sample_baked_octree_filtered_and_anisotropic(const Vector
 	pos_fract[1].y = Math::fmod(pos.y, target_level_size) / target_level_size;
 	pos_fract[1].z = Math::fmod(pos.z, target_level_size) / target_level_size;
 
-	float alpha_interp[2];
+	real_t alpha_interp[2];
 	Vector3 color_interp[2];
 
 	for (int i = 0; i < 2; i++) {
@@ -1546,41 +1546,41 @@ void VoxelLightBaker::_sample_baked_octree_filtered_and_anisotropic(const Vector
 
 		color_interp[i] = blend_z0.linear_interpolate(blend_z1, pos_fract[i].z);
 
-		float alpha_x00 = Math::lerp(alpha[i][0], alpha[i][1], pos_fract[i].x);
-		float alpha_xy0 = Math::lerp(alpha[i][2], alpha[i][3], pos_fract[i].x);
-		float alpha_z0 = Math::lerp(alpha_x00, alpha_xy0, pos_fract[i].y);
+		real_t alpha_x00 = Math::lerp((real_t)alpha[i][0], (real_t)alpha[i][1], (real_t)pos_fract[i].x);
+		real_t alpha_xy0 = Math::lerp((real_t)alpha[i][2], (real_t)alpha[i][3], (real_t)pos_fract[i].x);
+		real_t alpha_z0 = Math::lerp((real_t)alpha_x00, (real_t)alpha_xy0, (real_t)pos_fract[i].y);
 
-		float alpha_x0z = Math::lerp(alpha[i][4], alpha[i][5], pos_fract[i].x);
-		float alpha_xyz = Math::lerp(alpha[i][6], alpha[i][7], pos_fract[i].x);
-		float alpha_z1 = Math::lerp(alpha_x0z, alpha_xyz, pos_fract[i].y);
+		real_t alpha_x0z = Math::lerp((real_t)alpha[i][4], (real_t)alpha[i][5], (real_t)pos_fract[i].x);
+		real_t alpha_xyz = Math::lerp((real_t)alpha[i][6], (real_t)alpha[i][7], (real_t)pos_fract[i].x);
+		real_t alpha_z1 = Math::lerp((real_t)alpha_x0z, (real_t)alpha_xyz, (real_t)pos_fract[i].y);
 
-		alpha_interp[i] = Math::lerp(alpha_z0, alpha_z1, pos_fract[i].z);
+		alpha_interp[i] = Math::lerp((real_t)alpha_z0, (real_t)alpha_z1, (real_t)pos_fract[i].z);
 	}
 
 	r_color = color_interp[0].linear_interpolate(color_interp[1], level_filter);
-	r_alpha = Math::lerp(alpha_interp[0], alpha_interp[1], level_filter);
+	r_alpha = Math::lerp((real_t)alpha_interp[0], (real_t)alpha_interp[1], (real_t)level_filter);
 
 	//	print_line("pos: " + p_posf + " level " + rtos(p_level) + " down to " + itos(target_level) + "." + rtos(level_filter) + " color " + r_color + " alpha " + rtos(r_alpha));
 }
 
 Vector3 VoxelLightBaker::_voxel_cone_trace(const Vector3 &p_pos, const Vector3 &p_normal, float p_aperture) {
 
-	float bias = 2.5;
-	float max_distance = (Vector3(1, 1, 1) * (1 << (cell_subdiv - 1))).length();
+	real_t bias = 2.5;
+	real_t max_distance = (Vector3(1, 1, 1) * (1 << (cell_subdiv - 1))).length();
 
-	float dist = bias;
-	float alpha = 0.0;
+	real_t dist = bias;
+	real_t alpha = 0.0;
 	Vector3 color;
 
 	Vector3 scolor;
-	float salpha;
+	real_t salpha;
 
 	while (dist < max_distance && alpha < 0.95) {
-		float diameter = MAX(1.0, 2.0 * p_aperture * dist);
+		real_t diameter = MAX(1.0, 2.0 * p_aperture * dist);
 		//print_line("VCT: pos " + (p_pos + dist * p_normal) + " dist " + rtos(dist) + " mipmap " + rtos(log2(diameter)) + " alpha " + rtos(alpha));
 		//Plane scolor = textureLod(probe, (pos + dist * direction) * cell_size, log2(diameter) );
 		_sample_baked_octree_filtered_and_anisotropic(p_pos + dist * p_normal, p_normal, log2(diameter), scolor, salpha);
-		float a = (1.0 - alpha);
+		real_t a = (1.0 - alpha);
 		color += scolor * a;
 		alpha += a * salpha;
 		dist += diameter * 0.5;
@@ -1603,9 +1603,9 @@ Vector3 VoxelLightBaker::_compute_pixel_light_at_pos(const Vector3 &p_pos, const
 
 	//	print_line("normal xform: " + normal_xform);
 	const Vector3 *cone_dirs;
-	const float *cone_weights;
+	const real_t *cone_weights;
 	int cone_dir_count;
-	float cone_aperture;
+	real_t cone_aperture;
 
 	switch (bake_quality) {
 		case BAKE_QUALITY_LOW: {
@@ -1617,7 +1617,7 @@ Vector3 VoxelLightBaker::_compute_pixel_light_at_pos(const Vector3 &p_pos, const
 				Vector3(0, -0.707107, 0.707107)
 			};
 
-			static const float weights[4] = { 0.25, 0.25, 0.25, 0.25 };
+			static const real_t weights[4] = { 0.25, 0.25, 0.25, 0.25 };
 
 			cone_dirs = dirs;
 			cone_dir_count = 4;
@@ -1634,7 +1634,7 @@ Vector3 VoxelLightBaker::_compute_pixel_light_at_pos(const Vector3 &p_pos, const
 				Vector3(-0.700629, -0.509037, 0.5),
 				Vector3(0.267617, -0.823639, 0.5)
 			};
-			static const float weights[6] = { 0.25, 0.15, 0.15, 0.15, 0.15, 0.15 };
+			static const real_t weights[6] = { 0.25, 0.15, 0.15, 0.15, 0.15, 0.15 };
 			//
 			cone_dirs = dirs;
 			cone_dir_count = 6;
@@ -1643,7 +1643,7 @@ Vector3 VoxelLightBaker::_compute_pixel_light_at_pos(const Vector3 &p_pos, const
 		} break;
 		case BAKE_QUALITY_HIGH: {
 
-			//high qualily
+			//high quality
 			static const Vector3 dirs[10] = {
 				Vector3(0.8781648411741658, 0.0, 0.478358141694643),
 				Vector3(0.5369754325592234, 0.6794204427701518, 0.5000452447267606),
@@ -1656,7 +1656,7 @@ Vector3 VoxelLightBaker::_compute_pixel_light_at_pos(const Vector3 &p_pos, const
 				Vector3(0.19124006749743122, 0.39355745585016605, 0.8991883926788214),
 				Vector3(0.19124006749743122, -0.39355745585016605, 0.8991883926788214),
 			};
-			static const float weights[10] = { 0.08571, 0.08571, 0.08571, 0.08571, 0.08571, 0.08571, 0.08571, 0.133333, 0.133333, 0.13333 };
+			static const real_t weights[10] = { 0.08571, 0.08571, 0.08571, 0.08571, 0.08571, 0.08571, 0.08571, 0.133333, 0.133333, 0.13333 };
 			cone_dirs = dirs;
 			cone_dir_count = 10;
 			cone_aperture = 0.404; // tan(angle) 45 degrees
@@ -2385,7 +2385,7 @@ struct VoxelLightBakerOctree {
 	};
 
 	uint16_t light[6][3]; //anisotropic light
-	float alpha;
+	real_t alpha;
 	uint32_t children[8];
 };
 

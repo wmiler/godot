@@ -179,6 +179,9 @@ def configure(env):
         if env["bits"] == "64":
             env.Append(CCFLAGS=['/D_WIN64'])
 
+        if env["float"] == "64":
+            env.Append(CCFLAGS=['/DREAL_T_IS_DOUBLE'])
+
         LIBS = ['winmm', 'opengl32', 'dsound', 'kernel32', 'ole32', 'oleaut32', 'user32', 'gdi32', 'IPHLPAPI', 'Shlwapi', 'wsock32', 'Ws2_32', 'shell32', 'advapi32', 'dinput8', 'dxguid']
         env.Append(LINKFLAGS=[p + env["LIBSUFFIX"] for p in LIBS])
 

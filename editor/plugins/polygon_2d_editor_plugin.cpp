@@ -158,22 +158,22 @@ void Polygon2DEditor::_set_show_grid(bool p_show) {
 	uv_edit_draw->update();
 }
 
-void Polygon2DEditor::_set_snap_off_x(float p_val) {
+void Polygon2DEditor::_set_snap_off_x(real_t p_val) {
 	snap_offset.x = p_val;
 	uv_edit_draw->update();
 }
 
-void Polygon2DEditor::_set_snap_off_y(float p_val) {
+void Polygon2DEditor::_set_snap_off_y(real_t p_val) {
 	snap_offset.y = p_val;
 	uv_edit_draw->update();
 }
 
-void Polygon2DEditor::_set_snap_step_x(float p_val) {
+void Polygon2DEditor::_set_snap_step_x(real_t p_val) {
 	snap_step.x = p_val;
 	uv_edit_draw->update();
 }
 
-void Polygon2DEditor::_set_snap_step_y(float p_val) {
+void Polygon2DEditor::_set_snap_step_y(real_t p_val) {
 	snap_step.y = p_val;
 	uv_edit_draw->update();
 }
@@ -355,7 +355,7 @@ void Polygon2DEditor::_uv_input(const Ref<InputEvent> &p_input) {
 	}
 }
 
-void Polygon2DEditor::_uv_scroll_changed(float) {
+void Polygon2DEditor::_uv_scroll_changed(real_t) {
 
 	if (updating_uv_scroll)
 		return;

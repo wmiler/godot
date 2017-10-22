@@ -1421,7 +1421,7 @@ void TileMapEditor::_tileset_settings_changed() {
 		canvas_item_editor->update();
 }
 
-void TileMapEditor::_icon_size_changed(float p_value) {
+void TileMapEditor::_icon_size_changed(real_t p_value) {
 	if (node) {
 		palette->set_icon_scale(p_value);
 		_update_palette();

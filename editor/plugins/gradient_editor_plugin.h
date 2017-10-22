@@ -46,7 +46,7 @@ class GradientEditorPlugin : public EditorPlugin {
 protected:
 	static void _bind_methods();
 	void _ramp_changed();
-	void _undo_redo_gradient(const Vector<float> &offsets, const Vector<Color> &colors);
+	void _undo_redo_gradient(const Vector<real_t> &offsets, const Vector<Color> &colors);
 
 public:
 	virtual String get_name() const { return "ColorRamp"; }

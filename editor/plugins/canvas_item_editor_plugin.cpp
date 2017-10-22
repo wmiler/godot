@@ -223,7 +223,7 @@ void CanvasItemEditor::_edit_set_pivot(const Vector2 &mouse_pos) {
 	undo_redo->commit_action();
 }
 
-void CanvasItemEditor::_snap_if_closer_float(float p_value, float p_target_snap, float &r_current_snap, bool &r_snapped, float p_radius) {
+void CanvasItemEditor::_snap_if_closer_float(real_t p_value, real_t p_target_snap, real_t &r_current_snap, bool &r_snapped, real_t p_radius /*= 10.0*/) {
 	float radius = p_radius / zoom;
 	float dist = Math::abs(p_value - p_target_snap);
 	if (p_radius < 0 || dist < radius && (!r_snapped || dist < Math::abs(r_current_snap - p_value))) {
@@ -1036,7 +1036,7 @@ void CanvasItemEditor::_prepare_drag(const Point2 &p_click_pos) {
 	drag_from = transform.affine_inverse().xform(p_click_pos);
 }
 
-void CanvasItemEditor::incbeg(float &beg, float &end, float inc, float minsize, bool p_symmetric) {
+void CanvasItemEditor::incbeg(real_t &beg, real_t &end, real_t inc, real_t minsize, bool p_symmetric) {
 
 	if (minsize < 0) {
 
@@ -1063,7 +1063,7 @@ void CanvasItemEditor::incbeg(float &beg, float &end, float inc, float minsize, 
 	}
 }
 
-void CanvasItemEditor::incend(float &beg, float &end, float inc, float minsize, bool p_symmetric) {
+void CanvasItemEditor::incend(real_t &beg, real_t &end, real_t inc, real_t minsize, bool p_symmetric) {
 
 	if (minsize < 0) {
 

@@ -384,8 +384,8 @@ class CanvasItemEditor : public VBoxContainer {
 	void _update_scroll(float);
 	void _update_scrollbars();
 	void _update_cursor();
-	void incbeg(float &beg, float &end, float inc, float minsize, bool p_symmetric);
-	void incend(float &beg, float &end, float inc, float minsize, bool p_symmetric);
+	void incbeg(real_t &beg, real_t &end, real_t inc, real_t minsize, bool p_symmetric);
+	void incend(real_t &beg, real_t &end, real_t inc, real_t minsize, bool p_symmetric);
 
 	void _append_canvas_item(CanvasItem *p_item);
 	void _snap_changed();
@@ -429,7 +429,7 @@ class CanvasItemEditor : public VBoxContainer {
 
 	void _focus_selection(int p_op);
 
-	void _snap_if_closer_float(float p_value, float p_target_snap, float &r_current_snap, bool &r_snapped, float p_radius = 10.0);
+	void _snap_if_closer_float(real_t p_value, real_t p_target_snap, real_t &r_current_snap, bool &r_snapped, real_t p_radius = 10.0);
 	void _snap_if_closer_point(Point2 p_value, Point2 p_target_snap, Point2 &r_current_snap, bool (&r_snapped)[2], real_t rotation = 0.0, float p_radius = 10.0);
 	void _snap_other_nodes(Point2 p_value, Point2 &r_current_snap, bool (&r_snapped)[2], const Node *p_current, const CanvasItem *p_to_snap = NULL);
 

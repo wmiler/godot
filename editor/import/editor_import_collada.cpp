@@ -795,7 +795,7 @@ Error ColladaImport::_create_mesh_surfaces(bool p_optimize, Ref<ArrayMesh> &p_me
 				}
 
 				//make sure weights always add up to 1
-				float total = 0;
+				real_t total = 0;
 				for (int i = 0; i < weights.size(); i++)
 					total += weights[i].weight;
 				if (total)
@@ -1054,11 +1054,11 @@ Error ColladaImport::_create_mesh_surfaces(bool p_optimize, Ref<ArrayMesh> &p_me
 				}
 
 				if (has_weights) {
-					Vector<float> weights;
+					Vector<real_t> weights;
 					Vector<int> bones;
 					weights.resize(VS::ARRAY_WEIGHTS_SIZE);
 					bones.resize(VS::ARRAY_WEIGHTS_SIZE);
-					//float sum=0.0;
+					//real_t sum=0.0;
 					for (int l = 0; l < VS::ARRAY_WEIGHTS_SIZE; l++) {
 						if (l < vertex_array[k].weights.size()) {
 							weights[l] = vertex_array[k].weights[l].weight;
