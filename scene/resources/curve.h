@@ -159,7 +159,7 @@ class Curve2D : public Resource {
 
 	struct BakedPoint {
 
-		float ofs;
+		real_t ofs;
 		Vector2 point;
 	};
 
@@ -171,7 +171,7 @@ class Curve2D : public Resource {
 
 	float bake_interval;
 
-	void _bake_segment2d(Map<float, Vector2> &r_bake, float p_begin, float p_end, const Vector2 &p_a, const Vector2 &p_out, const Vector2 &p_b, const Vector2 &p_in, int p_depth, int p_max_depth, float p_tol) const;
+	void _bake_segment2d(Map<real_t, Vector2> &r_bake, float p_begin, float p_end, const Vector2 &p_a, const Vector2 &p_out, const Vector2 &p_b, const Vector2 &p_in, int p_depth, int p_max_depth, float p_tol) const;
 	Dictionary _get_data() const;
 	void _set_data(const Dictionary &p_data);
 
@@ -190,13 +190,13 @@ public:
 	void remove_point(int p_index);
 	void clear_points();
 
-	Vector2 interpolate(int p_index, float p_offset) const;
+	Vector2 interpolate(int p_index, real_t p_offset) const;
 	Vector2 interpolatef(real_t p_findex) const;
 
 	void set_bake_interval(float p_tolerance);
-	float get_bake_interval() const;
+	real_t get_bake_interval() const;
 
-	float get_baked_length() const;
+	real_t get_baked_length() const;
 	Vector2 interpolate_baked(float p_offset, bool p_cubic = false) const;
 	PoolVector2Array get_baked_points() const; //useful for going through
 
@@ -214,7 +214,7 @@ class Curve3D : public Resource {
 		Vector3 in;
 		Vector3 out;
 		Vector3 pos;
-		float tilt;
+		real_t tilt;
 
 		Point() { tilt = 0; }
 	};
@@ -223,7 +223,7 @@ class Curve3D : public Resource {
 
 	struct BakedPoint {
 
-		float ofs;
+		real_t ofs;
 		Vector3 point;
 	};
 
@@ -234,7 +234,7 @@ class Curve3D : public Resource {
 
 	void _bake() const;
 
-	float bake_interval;
+	real_t bake_interval;
 
 	void _bake_segment3d(Map<float, Vector3> &r_bake, float p_begin, float p_end, const Vector3 &p_a, const Vector3 &p_out, const Vector3 &p_b, const Vector3 &p_in, int p_depth, int p_max_depth, float p_tol) const;
 	Dictionary _get_data() const;
@@ -261,11 +261,11 @@ public:
 	Vector3 interpolatef(real_t p_findex) const;
 
 	void set_bake_interval(float p_tolerance);
-	float get_bake_interval() const;
+	real_t get_bake_interval() const;
 
-	float get_baked_length() const;
+	real_t get_baked_length() const;
 	Vector3 interpolate_baked(float p_offset, bool p_cubic = false) const;
-	float interpolate_baked_tilt(float p_offset) const;
+	real_t interpolate_baked_tilt(float p_offset) const;
 	PoolVector3Array get_baked_points() const; //useful for going through
 	PoolRealArray get_baked_tilts() const; //useful for going through
 

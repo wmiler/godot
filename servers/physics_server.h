@@ -45,12 +45,12 @@ protected:
 
 public:
 	virtual Vector3 get_total_gravity() const = 0;
-	virtual float get_total_angular_damp() const = 0;
-	virtual float get_total_linear_damp() const = 0;
+	virtual real_t get_total_angular_damp() const = 0;
+	virtual real_t get_total_linear_damp() const = 0;
 
 	virtual Vector3 get_center_of_mass() const = 0;
 	virtual Basis get_principal_inertia_axes() const = 0;
-	virtual float get_inverse_mass() const = 0; // get the mass
+	virtual real_t get_inverse_mass() const = 0; // get the mass
 	virtual Vector3 get_inverse_inertia() const = 0; // get density of this body space
 	virtual Basis get_inverse_inertia_tensor() const = 0; // get density of this body space
 
@@ -393,8 +393,8 @@ public:
 		BODY_PARAM_MAX,
 	};
 
-	virtual void body_set_param(RID p_body, BodyParameter p_param, float p_value) = 0;
-	virtual float body_get_param(RID p_body, BodyParameter p_param) const = 0;
+	virtual void body_set_param(RID p_body, BodyParameter p_param, real_t p_value) = 0;
+	virtual real_t body_get_param(RID p_body, BodyParameter p_param) const = 0;
 
 	virtual void body_set_kinematic_safe_margin(RID p_body, real_t p_margin) = 0;
 	virtual real_t body_get_kinematic_safe_margin(RID p_body) const = 0;
@@ -443,8 +443,8 @@ public:
 	virtual int body_get_max_contacts_reported(RID p_body) const = 0;
 
 	//missing remove
-	virtual void body_set_contacts_reported_depth_threshold(RID p_body, float p_threshold) = 0;
-	virtual float body_get_contacts_reported_depth_threshold(RID p_body) const = 0;
+	virtual void body_set_contacts_reported_depth_threshold(RID p_body, real_t p_threshold) = 0;
+	virtual real_t body_get_contacts_reported_depth_threshold(RID p_body) const = 0;
 
 	virtual void body_set_omit_force_integration(RID p_body, bool p_omit) = 0;
 	virtual bool body_is_omitting_force_integration(RID p_body) const = 0;
@@ -499,8 +499,8 @@ public:
 		PIN_JOINT_IMPULSE_CLAMP
 	};
 
-	virtual void pin_joint_set_param(RID p_joint, PinJointParam p_param, float p_value) = 0;
-	virtual float pin_joint_get_param(RID p_joint, PinJointParam p_param) const = 0;
+	virtual void pin_joint_set_param(RID p_joint, PinJointParam p_param, real_t p_value) = 0;
+	virtual real_t pin_joint_get_param(RID p_joint, PinJointParam p_param) const = 0;
 
 	virtual void pin_joint_set_local_a(RID p_joint, const Vector3 &p_A) = 0;
 	virtual Vector3 pin_joint_get_local_a(RID p_joint) const = 0;
@@ -530,8 +530,8 @@ public:
 	virtual RID joint_create_hinge(RID p_body_A, const Transform &p_hinge_A, RID p_body_B, const Transform &p_hinge_B) = 0;
 	virtual RID joint_create_hinge_simple(RID p_body_A, const Vector3 &p_pivot_A, const Vector3 &p_axis_A, RID p_body_B, const Vector3 &p_pivot_B, const Vector3 &p_axis_B) = 0;
 
-	virtual void hinge_joint_set_param(RID p_joint, HingeJointParam p_param, float p_value) = 0;
-	virtual float hinge_joint_get_param(RID p_joint, HingeJointParam p_param) const = 0;
+	virtual void hinge_joint_set_param(RID p_joint, HingeJointParam p_param, real_t p_value) = 0;
+	virtual real_t hinge_joint_get_param(RID p_joint, HingeJointParam p_param) const = 0;
 
 	virtual void hinge_joint_set_flag(RID p_joint, HingeJointFlag p_flag, bool p_value) = 0;
 	virtual bool hinge_joint_get_flag(RID p_joint, HingeJointFlag p_flag) const = 0;
@@ -566,8 +566,8 @@ public:
 
 	virtual RID joint_create_slider(RID p_body_A, const Transform &p_local_frame_A, RID p_body_B, const Transform &p_local_frame_B) = 0; //reference frame is A
 
-	virtual void slider_joint_set_param(RID p_joint, SliderJointParam p_param, float p_value) = 0;
-	virtual float slider_joint_get_param(RID p_joint, SliderJointParam p_param) const = 0;
+	virtual void slider_joint_set_param(RID p_joint, SliderJointParam p_param, real_t p_value) = 0;
+	virtual real_t slider_joint_get_param(RID p_joint, SliderJointParam p_param) const = 0;
 
 	enum ConeTwistJointParam {
 		CONE_TWIST_JOINT_SWING_SPAN,
@@ -580,8 +580,8 @@ public:
 
 	virtual RID joint_create_cone_twist(RID p_body_A, const Transform &p_local_frame_A, RID p_body_B, const Transform &p_local_frame_B) = 0; //reference frame is A
 
-	virtual void cone_twist_joint_set_param(RID p_joint, ConeTwistJointParam p_param, float p_value) = 0;
-	virtual float cone_twist_joint_get_param(RID p_joint, ConeTwistJointParam p_param) const = 0;
+	virtual void cone_twist_joint_set_param(RID p_joint, ConeTwistJointParam p_param, real_t p_value) = 0;
+	virtual real_t cone_twist_joint_get_param(RID p_joint, ConeTwistJointParam p_param) const = 0;
 
 	enum G6DOFJointAxisParam {
 		G6DOF_JOINT_LINEAR_LOWER_LIMIT,
@@ -611,8 +611,8 @@ public:
 
 	virtual RID joint_create_generic_6dof(RID p_body_A, const Transform &p_local_frame_A, RID p_body_B, const Transform &p_local_frame_B) = 0; //reference frame is A
 
-	virtual void generic_6dof_joint_set_param(RID p_joint, Vector3::Axis, G6DOFJointAxisParam p_param, float p_value) = 0;
-	virtual float generic_6dof_joint_get_param(RID p_joint, Vector3::Axis, G6DOFJointAxisParam p_param) = 0;
+	virtual void generic_6dof_joint_set_param(RID p_joint, Vector3::Axis, G6DOFJointAxisParam p_param, real_t p_value) = 0;
+	virtual real_t generic_6dof_joint_get_param(RID p_joint, Vector3::Axis, G6DOFJointAxisParam p_param) = 0;
 
 	virtual void generic_6dof_joint_set_flag(RID p_joint, Vector3::Axis, G6DOFJointAxisFlag p_flag, bool p_enable) = 0;
 	virtual bool generic_6dof_joint_get_flag(RID p_joint, Vector3::Axis, G6DOFJointAxisFlag p_flag) = 0;
@@ -630,7 +630,7 @@ public:
 
 	virtual void set_active(bool p_active) = 0;
 	virtual void init() = 0;
-	virtual void step(float p_step) = 0;
+	virtual void step(real_t p_step) = 0;
 	virtual void sync() = 0;
 	virtual void flush_queries() = 0;
 	virtual void finish() = 0;

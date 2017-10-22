@@ -701,19 +701,19 @@ PoolVector<int> EditorSceneImporterGLTF::_decode_accessor_as_ints(GLTFState &sta
 	return ret;
 }
 
-PoolVector<float> EditorSceneImporterGLTF::_decode_accessor_as_floats(GLTFState &state, int p_accessor, bool p_for_vertex) {
+PoolVector<real_t> EditorSceneImporterGLTF::_decode_accessor_as_floats(GLTFState &state, int p_accessor, bool p_for_vertex) {
 
 	Vector<double> attribs = _decode_accessor(state, p_accessor, p_for_vertex);
-	PoolVector<float> ret;
+	PoolVector<real_t> ret;
 	if (attribs.size() == 0)
 		return ret;
 	const double *attribs_ptr = attribs.ptr();
 	int ret_size = attribs.size();
 	ret.resize(ret_size);
 	{
-		PoolVector<float>::Write w = ret.write();
+		PoolVector<real_t>::Write w = ret.write();
 		for (int i = 0; i < ret_size; i++) {
-			w[i] = float(attribs_ptr[i]);
+			w[i] = real_t(attribs_ptr[i]);
 		}
 	}
 	return ret;
@@ -906,10 +906,10 @@ Error EditorSceneImporterGLTF::_parse_meshes(GLTFState &state) {
 				array[Mesh::ARRAY_BONES] = _decode_accessor_as_ints(state, a["JOINTS_0"], true);
 			}
 			if (a.has("WEIGHTS_0")) {
-				PoolVector<float> weights = _decode_accessor_as_floats(state, a["WEIGHTS_0"], true);
+				PoolVector<real_t> weights = _decode_accessor_as_floats(state, a["WEIGHTS_0"], true);
 				{ //gltf does not seem to normalize the weights for some reason..
 					int wc = weights.size();
-					PoolVector<float>::Write w = weights.write();
+					PoolVector<real_t>::Write w = weights.write();
 
 					//PoolVector<int> v = array[Mesh::ARRAY_BONES];
 					//PoolVector<int>::Read r = v.read();
@@ -1018,18 +1018,18 @@ Error EditorSceneImporterGLTF::_parse_meshes(GLTFState &state) {
 					}
 					if (t.has("TANGENT")) {
 						PoolVector<Vector3> tangents_v3 = _decode_accessor_as_vec3(state, t["TANGENT"], true);
-						PoolVector<float> tangents_v4;
-						PoolVector<float> src_tangents = array[Mesh::ARRAY_TANGENT];
+						PoolVector<real_t> tangents_v4;
+						PoolVector<real_t> src_tangents = array[Mesh::ARRAY_TANGENT];
 						ERR_FAIL_COND_V(src_tangents.size() == 0, ERR_PARSE_ERROR);
 
 						{
 
 							int size4 = src_tangents.size();
 							tangents_v4.resize(size4);
-							PoolVector<float>::Write w4 = tangents_v4.write();
+							PoolVector<real_t>::Write w4 = tangents_v4.write();
 
 							PoolVector<Vector3>::Read r3 = tangents_v3.read();
-							PoolVector<float>::Read r4 = src_tangents.read();
+							PoolVector<real_t>::Read r4 = src_tangents.read();
 
 							for (int l = 0; l < size4 / 4; l++) {
 
@@ -1561,7 +1561,7 @@ Error EditorSceneImporterGLTF::_parse_animations(GLTFState &state) {
 			}
 
 			print_line("path: " + path);
-			PoolVector<float> times = _decode_accessor_as_floats(state, input, false);
+			PoolVector<real_t> times = _decode_accessor_as_floats(state, input, false);
 			if (path == "translation") {
 				PoolVector<Vector3> translations = _decode_accessor_as_vec3(state, output, false);
 				track->translation_track.interpolation = interp;
@@ -1578,7 +1578,7 @@ Error EditorSceneImporterGLTF::_parse_animations(GLTFState &state) {
 				track->scale_track.times = Variant(times); //convert via variant
 				track->scale_track.values = Variant(scales); //convert via variant
 			} else if (path == "weights") {
-				PoolVector<float> weights = _decode_accessor_as_floats(state, output, false);
+				PoolVector<real_t> weights = _decode_accessor_as_floats(state, output, false);
 
 				ERR_FAIL_INDEX_V(state.nodes[node]->mesh, state.meshes.size(), ERR_PARSE_ERROR);
 				GLTFMesh *mesh = &state.meshes[state.nodes[node]->mesh];
@@ -1588,12 +1588,12 @@ Error EditorSceneImporterGLTF::_parse_animations(GLTFState &state) {
 				track->weight_tracks.resize(wc);
 
 				int wlen = weights.size() / wc;
-				PoolVector<float>::Read r = weights.read();
+				PoolVector<real_t>::Read r = weights.read();
 				for (int k = 0; k < wc; k++) { //separate tracks, having them together is not such a good idea
-					GLTFAnimation::Channel<float> cf;
+					GLTFAnimation::Channel<real_t> cf;
 					cf.interpolation = interp;
 					cf.times = Variant(times);
-					Vector<float> wdata;
+					Vector<real_t> wdata;
 					wdata.resize(wlen);
 					for (int l = 0; l < wlen; l++) {
 						wdata[l] = r[l * wc + k];
@@ -1788,7 +1788,7 @@ struct EditorSceneImporterGLTFInterpolate<Quat> {
 };
 
 template <class T>
-T EditorSceneImporterGLTF::_interpolate_track(const Vector<float> &p_times, const Vector<T> &p_values, float p_time, GLTFAnimation::Interpolation p_interp) {
+T EditorSceneImporterGLTF::_interpolate_track(const Vector<real_t> &p_times, const Vector<T> &p_values, real_t p_time, GLTFAnimation::Interpolation p_interp) {
 
 	//could use binary search, worth it?
 	int idx = -1;
@@ -1900,8 +1900,26 @@ void EditorSceneImporterGLTF::_import_animation(GLTFState &state, AnimationPlaye
 			for (int i = 0; i < track.translation_track.times.size(); i++) {
 				length = MAX(length, track.translation_track.times[i]);
 			}
-			for (int i = 0; i < track.scale_track.times.size(); i++) {
-				length = MAX(length, track.scale_track.times[i]);
+		}
+
+		animation->set_length(length);
+
+		if (track.rotation_track.values.size() || track.translation_track.values.size() || track.scale_track.values.size()) {
+			//make transform track
+			int track_idx = animation->get_track_count();
+			animation->add_track(Animation::TYPE_TRANSFORM);
+			animation->track_set_path(track_idx, node_path);
+			//first determine animation length
+
+			real_t increment = 1.0 / float(bake_fps);
+			real_t time = 0.0;
+
+			Vector3 base_pos;
+			Quat base_rot;
+			Vector3 base_scale = Vector3(1, 1, 1);
+
+			if (!track.rotation_track.values.size()) {
+				base_rot = state.nodes[E->key()]->rotation;
 			}
 
 			for (int i = 0; i < track.weight_tracks.size(); i++) {
@@ -1966,10 +1984,13 @@ void EditorSceneImporterGLTF::_import_animation(GLTFState &state, AnimationPlaye
 						xform.basis = Basis(rot);
 						xform.basis.scale(scale);
 						xform.origin = pos;
-
-						Skeleton *skeleton = skeletons[node->joints[i].skin];
-						int bone = node->joints[i].godot_bone_index;
-						xform = skeleton->get_bone_rest(bone).affine_inverse() * xform;
+			if (track.weight_tracks[i].interpolation <= GLTFAnimation::INTERP_STEP) {
+				animation->track_set_interpolation_type(track_idx, track.weight_tracks[i].interpolation == GLTFAnimation::INTERP_STEP ? Animation::INTERPOLATION_NEAREST : Animation::INTERPOLATION_NEAREST);
+				for (int j = 0; j < track.weight_tracks[i].times.size(); j++) {
+					real_t t = track.weight_tracks[i].times[j];
+					real_t w = track.weight_tracks[i].values[j];
+				real_t increment = 1.0 / real_t(bake_fps);
+				real_t time = 0.0;
 
 						rot = xform.basis;
 						rot.normalize();
@@ -1977,8 +1998,7 @@ void EditorSceneImporterGLTF::_import_animation(GLTFState &state, AnimationPlaye
 						pos = xform.origin;
 					}
 
-					animation->transform_track_insert_key(track_idx, time, pos, rot, scale);
-
+					_interpolate_track<real_t>(track.weight_tracks[i].times, track.weight_tracks[i].values, time, track.weight_tracks[i].interpolation);
 					if (last) {
 						break;
 					}

@@ -46,10 +46,10 @@ protected:
 
 public:
 	virtual Vector2 get_total_gravity() const = 0; // get gravity vector working on this body space/area
-	virtual float get_total_linear_damp() const = 0; // get density of this body space/area
-	virtual float get_total_angular_damp() const = 0; // get density of this body space/area
+	virtual real_t get_total_linear_damp() const = 0; // get density of this body space/area
+	virtual real_t get_total_angular_damp() const = 0; // get density of this body space/area
 
-	virtual float get_inverse_mass() const = 0; // get the mass
+	virtual real_t get_inverse_mass() const = 0; // get the mass
 	virtual real_t get_inverse_inertia() const = 0; // get density of this body space
 
 	virtual void set_linear_velocity(const Vector2 &p_velocity) = 0;
@@ -413,8 +413,8 @@ public:
 		BODY_PARAM_MAX,
 	};
 
-	virtual void body_set_param(RID p_body, BodyParameter p_param, float p_value) = 0;
-	virtual float body_get_param(RID p_body, BodyParameter p_param) const = 0;
+	virtual void body_set_param(RID p_body, BodyParameter p_param, real_t p_value) = 0;
+	virtual real_t body_get_param(RID p_body, BodyParameter p_param) const = 0;
 
 	//state
 	enum BodyState {
@@ -432,8 +432,8 @@ public:
 	virtual void body_set_applied_force(RID p_body, const Vector2 &p_force) = 0;
 	virtual Vector2 body_get_applied_force(RID p_body) const = 0;
 
-	virtual void body_set_applied_torque(RID p_body, float p_torque) = 0;
-	virtual float body_get_applied_torque(RID p_body) const = 0;
+	virtual void body_set_applied_torque(RID p_body, real_t p_torque) = 0;
+	virtual real_t body_get_applied_torque(RID p_body) const = 0;
 
 	virtual void body_add_force(RID p_body, const Vector2 &p_offset, const Vector2 &p_force) = 0;
 
@@ -449,8 +449,8 @@ public:
 	virtual int body_get_max_contacts_reported(RID p_body) const = 0;
 
 	//missing remove
-	virtual void body_set_contacts_reported_depth_threshold(RID p_body, float p_threshold) = 0;
-	virtual float body_get_contacts_reported_depth_threshold(RID p_body) const = 0;
+	virtual void body_set_contacts_reported_depth_threshold(RID p_body, real_t p_threshold) = 0;
+	virtual real_t body_get_contacts_reported_depth_threshold(RID p_body) const = 0;
 
 	virtual void body_set_omit_force_integration(RID p_body, bool p_omit) = 0;
 	virtual bool body_is_omitting_force_integration(RID p_body) const = 0;
@@ -479,7 +479,7 @@ public:
 		Variant collider_metadata;
 	};
 
-	virtual bool body_test_motion(RID p_body, const Transform2D &p_from, const Vector2 &p_motion, float p_margin = 0.001, MotionResult *r_result = NULL) = 0;
+	virtual bool body_test_motion(RID p_body, const Transform2D &p_from, const Vector2 &p_motion, real_t p_margin = 0.001, MotionResult *r_result = NULL) = 0;
 
 	/* JOINT API */
 
@@ -533,7 +533,7 @@ public:
 
 	virtual void set_active(bool p_active) = 0;
 	virtual void init() = 0;
-	virtual void step(float p_step) = 0;
+	virtual void step(real_t p_step) = 0;
 	virtual void sync() = 0;
 	virtual void flush_queries() = 0;
 	virtual void end_sync() = 0;

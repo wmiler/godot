@@ -384,8 +384,8 @@ class CanvasItemEditor : public VBoxContainer {
 	void _update_scroll(float);
 	void _update_scrollbars();
 	void _update_cursor();
-	void incbeg(float &beg, float &end, float inc, float minsize, bool p_symmetric);
-	void incend(float &beg, float &end, float inc, float minsize, bool p_symmetric);
+	void incbeg(real_t &beg, real_t &end, real_t inc, real_t minsize, bool p_symmetric);
+	void incend(real_t &beg, real_t &end, real_t inc, real_t minsize, bool p_symmetric);
 
 	void _append_canvas_item(CanvasItem *p_item);
 	void _snap_changed();

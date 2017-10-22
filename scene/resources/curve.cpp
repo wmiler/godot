@@ -598,7 +598,7 @@ void Curve2D::clear_points() {
 	}
 }
 
-Vector2 Curve2D::interpolate(int p_index, float p_offset) const {
+Vector2 Curve2D::interpolate(int p_index, real_t p_offset) const {
 
 	int pc = points.size();
 	ERR_FAIL_COND_V(pc == 0, Vector2());
@@ -735,7 +735,7 @@ void Curve2D::_bake() const {
 	}
 }
 
-float Curve2D::get_baked_length() const {
+real_t Curve2D::get_baked_length() const {
 
 	if (baked_cache_dirty)
 		_bake();
@@ -801,7 +801,7 @@ void Curve2D::set_bake_interval(float p_tolerance) {
 	emit_signal(CoreStringNames::get_singleton()->changed);
 }
 
-float Curve2D::get_bake_interval() const {
+real_t Curve2D::get_bake_interval() const {
 
 	return bake_interval;
 }
@@ -1247,7 +1247,7 @@ float Curve3D::interpolate_baked_tilt(float p_offset) const {
 		return r[bpc - 1];
 
 	int idx = Math::floor((double)p_offset / (double)bake_interval);
-	float frac = Math::fmod(p_offset, bake_interval);
+	real_t frac = Math::fmod(p_offset, bake_interval);
 
 	if (idx >= bpc - 1) {
 		return r[bpc - 1];
@@ -1276,14 +1276,14 @@ PoolRealArray Curve3D::get_baked_tilts() const {
 	return baked_tilt_cache;
 }
 
-void Curve3D::set_bake_interval(float p_tolerance) {
+void Curve3D::set_bake_interval(real_t p_tolerance) {
 
 	bake_interval = p_tolerance;
 	baked_cache_dirty = true;
 	emit_signal(CoreStringNames::get_singleton()->changed);
 }
 
-float Curve3D::get_bake_interval() const {
+real_t Curve3D::get_bake_interval() const {
 
 	return bake_interval;
 }
@@ -1339,14 +1339,14 @@ void Curve3D::_set_data(const Dictionary &p_data) {
 	baked_cache_dirty = true;
 }
 
-PoolVector3Array Curve3D::tessellate(int p_max_stages, float p_tolerance) const {
+PoolVector3Array Curve3D::tessellate(int p_max_stages, real_t p_tolerance) const {
 
 	PoolVector3Array tess;
 
 	if (points.size() == 0) {
 		return tess;
 	}
-	Vector<Map<float, Vector3> > midpoints;
+	Vector<Map<real_t, Vector3> > midpoints;
 
 	midpoints.resize(points.size() - 1);
 
@@ -1365,7 +1365,7 @@ PoolVector3Array Curve3D::tessellate(int p_max_stages, float p_tolerance) const 
 
 	for (int i = 0; i < points.size() - 1; i++) {
 
-		for (Map<float, Vector3>::Element *E = midpoints[i].front(); E; E = E->next()) {
+		for (Map<real_t, Vector3>::Element *E = midpoints[i].front(); E; E = E->next()) {
 
 			pidx++;
 			bpw[pidx] = E->get();

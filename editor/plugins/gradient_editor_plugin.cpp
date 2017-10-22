@@ -75,9 +75,9 @@ void GradientEditorPlugin::_ramp_changed() {
 		UndoRedo *ur = EditorNode::get_singleton()->get_undo_redo();
 
 		//Not sure if I should convert this data to PoolVector
-		Vector<float> new_offsets = ramp_editor->get_offsets();
+		Vector<real_t> new_offsets = ramp_editor->get_offsets();
 		Vector<Color> new_colors = ramp_editor->get_colors();
-		Vector<float> old_offsets = gradient_ref->get_offsets();
+		Vector<real_t> old_offsets = gradient_ref->get_offsets();
 		Vector<Color> old_colors = gradient_ref->get_colors();
 
 		if (old_offsets.size() != new_offsets.size())
@@ -92,7 +92,7 @@ void GradientEditorPlugin::_ramp_changed() {
 	}
 }
 
-void GradientEditorPlugin::_undo_redo_gradient(const Vector<float> &offsets, const Vector<Color> &colors) {
+void GradientEditorPlugin::_undo_redo_gradient(const Vector<real_t> &offsets, const Vector<Color> &colors) {
 
 	gradient_ref->set_offsets(offsets);
 	gradient_ref->set_colors(colors);

@@ -63,7 +63,7 @@ protected:
 
 public:
 	void set_ramp(const Vector<float> &p_offsets, const Vector<Color> &p_colors);
-	Vector<float> get_offsets() const;
+	Vector<real_t> get_offsets() const;
 	Vector<Color> get_colors() const;
 	void set_points(Vector<Gradient::Point> &p_points);
 	Vector<Gradient::Point> &get_points();

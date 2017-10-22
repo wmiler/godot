@@ -1284,7 +1284,7 @@ void VisualServerScene::_light_instance_update_shadow(Instance *p_instance, cons
 						continue;
 					}
 
-					float max, min;
+					real_t max, min;
 					instance->transformed_aabb.project_range_in_plane(base, min, max);
 
 					if (max > z_max) {
@@ -1337,7 +1337,7 @@ void VisualServerScene::_light_instance_update_shadow(Instance *p_instance, cons
 
 				if (p_cam_orthogonal) {
 
-					float w, h;
+					real_t w, h;
 					p_cam_projection.get_viewport_size(w, h);
 					camera_matrix.set_orthogonal(w, aspect, distances[(i == 0 || !overlap) ? i : i - 1], distances[i + 1], false);
 				} else {
@@ -1468,7 +1468,7 @@ void VisualServerScene::_light_instance_update_shadow(Instance *p_instance, cons
 
 				for (int j = 0; j < cull_count; j++) {
 
-					float min, max;
+					real_t min, max;
 					Instance *instance = instance_shadow_cull_result[j];
 					if (!instance->visible || !((1 << instance->base_type) & VS::INSTANCE_GEOMETRY_MASK) || !static_cast<InstanceGeometryData *>(instance->base_data)->can_cast_shadows) {
 						cull_count--;
@@ -1921,10 +1921,10 @@ void VisualServerScene::_render_scene(const Transform p_cam_transform, const Cam
 			{ //compute coverage
 
 				Transform cam_xf = p_cam_transform;
-				float zn = p_cam_projection.get_z_near();
+				real_t zn = p_cam_projection.get_z_near();
 				Plane p(cam_xf.origin + cam_xf.basis.get_axis(2) * -zn, -cam_xf.basis.get_axis(2)); //camera near plane
 
-				float vp_w, vp_h; //near plane size in screen coordinates
+				real_t vp_w, vp_h; //near plane size in screen coordinates
 				p_cam_projection.get_viewport_size(vp_w, vp_h);
 
 				switch (VSG::storage->light_get_type(ins->base)) {

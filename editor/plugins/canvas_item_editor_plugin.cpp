@@ -1036,7 +1036,7 @@ void CanvasItemEditor::_prepare_drag(const Point2 &p_click_pos) {
 	drag_from = transform.affine_inverse().xform(p_click_pos);
 }
 
-void CanvasItemEditor::incbeg(float &beg, float &end, float inc, float minsize, bool p_symmetric) {
+void CanvasItemEditor::incbeg(real_t &beg, real_t &end, real_t inc, real_t minsize, bool p_symmetric) {
 
 	if (minsize < 0) {
 
@@ -1063,7 +1063,7 @@ void CanvasItemEditor::incbeg(float &beg, float &end, float inc, float minsize, 
 	}
 }
 
-void CanvasItemEditor::incend(float &beg, float &end, float inc, float minsize, bool p_symmetric) {
+void CanvasItemEditor::incend(real_t &beg, real_t &end, real_t inc, real_t minsize, bool p_symmetric) {
 
 	if (minsize < 0) {
 

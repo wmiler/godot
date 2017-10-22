@@ -90,9 +90,10 @@ void PathFollow::_update_transform() {
 		return;
 	}
 
-	float o = offset;
+	real_t o = offset;
 
 	if (loop) {
+		// FIXME float only
 		o = Math::fposmod(o, c->get_baked_length());
 	}
 

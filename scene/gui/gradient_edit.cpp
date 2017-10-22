@@ -419,8 +419,8 @@ void GradientEdit::set_ramp(const Vector<float> &p_offsets, const Vector<Color> 
 	update();
 }
 
-Vector<float> GradientEdit::get_offsets() const {
-	Vector<float> ret;
+Vector<real_t> GradientEdit::get_offsets() const {
+	Vector<real_t> ret;
 	for (int i = 0; i < points.size(); i++)
 		ret.push_back(points[i].offset);
 	return ret;

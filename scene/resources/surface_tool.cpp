@@ -295,9 +295,9 @@ Array SurfaceTool::commit_to_arrays() {
 			} break;
 			case Mesh::ARRAY_TANGENT: {
 
-				PoolVector<float> array;
+				PoolVector<real_t> array;
 				array.resize(varr_len * 4);
-				PoolVector<float>::Write w = array.write();
+				PoolVector<real_t>::Write w = array.write();
 
 				int idx = 0;
 				for (List<Vertex>::Element *E = vertex_array.front(); E; E = E->next(), idx += 4) {
@@ -313,7 +313,7 @@ Array SurfaceTool::commit_to_arrays() {
 					w[idx + 3] = d < 0 ? -1 : 1;
 				}
 
-				w = PoolVector<float>::Write();
+				w = PoolVector<real_t>::Write();
 				a[i] = array;
 
 			} break;
@@ -357,9 +357,9 @@ Array SurfaceTool::commit_to_arrays() {
 			} break;
 			case Mesh::ARRAY_WEIGHTS: {
 
-				PoolVector<float> array;
+				PoolVector<real_t> array;
 				array.resize(varr_len * 4);
-				PoolVector<float>::Write w = array.write();
+				PoolVector<real_t>::Write w = array.write();
 
 				int idx = 0;
 				for (List<Vertex>::Element *E = vertex_array.front(); E; E = E->next(), idx += 4) {
@@ -373,7 +373,7 @@ Array SurfaceTool::commit_to_arrays() {
 					}
 				}
 
-				w = PoolVector<float>::Write();
+				w = PoolVector<real_t>::Write();
 				a[i] = array;
 
 			} break;
@@ -595,12 +595,12 @@ void SurfaceTool::_create_list_from_arrays(Array arr, List<Vertex> *r_vertex, Li
 
 	PoolVector<Vector3> varr = arr[VS::ARRAY_VERTEX];
 	PoolVector<Vector3> narr = arr[VS::ARRAY_NORMAL];
-	PoolVector<float> tarr = arr[VS::ARRAY_TANGENT];
+	PoolVector<real_t> tarr = arr[VS::ARRAY_TANGENT];
 	PoolVector<Color> carr = arr[VS::ARRAY_COLOR];
 	PoolVector<Vector2> uvarr = arr[VS::ARRAY_TEX_UV];
 	PoolVector<Vector2> uv2arr = arr[VS::ARRAY_TEX_UV2];
 	PoolVector<int> barr = arr[VS::ARRAY_BONES];
-	PoolVector<float> warr = arr[VS::ARRAY_WEIGHTS];
+	PoolVector<real_t> warr = arr[VS::ARRAY_WEIGHTS];
 
 	int vc = varr.size();
 
@@ -618,7 +618,7 @@ void SurfaceTool::_create_list_from_arrays(Array arr, List<Vertex> *r_vertex, Li
 		lformat |= VS::ARRAY_FORMAT_NORMAL;
 		rn = narr.read();
 	}
-	PoolVector<float>::Read rt;
+	PoolVector<real_t>::Read rt;
 	if (tarr.size()) {
 		lformat |= VS::ARRAY_FORMAT_TANGENT;
 		rt = tarr.read();
@@ -647,7 +647,7 @@ void SurfaceTool::_create_list_from_arrays(Array arr, List<Vertex> *r_vertex, Li
 		rb = barr.read();
 	}
 
-	PoolVector<float>::Read rw;
+	PoolVector<real_t>::Read rw;
 	if (warr.size()) {
 		lformat |= VS::ARRAY_FORMAT_WEIGHTS;
 		rw = warr.read();
