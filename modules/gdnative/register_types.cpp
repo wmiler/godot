@@ -37,6 +37,7 @@
 #include "io/resource_saver.h"
 
 #include "arvr/register_types.h"
+#include "networked_multiplayer_peer/register_types.h"
 #include "nativescript/register_types.h"
 #include "pluginscript/register_types.h"
 
@@ -322,6 +323,7 @@ void register_gdnative_types() {
 	GDNativeCallRegistry::singleton->register_native_call_type("standard_varcall", cb_standard_varcall);
 
 	register_arvr_types();
+	register_networked_multiplayer_peer_types();
 	register_nativescript_types();
 	register_pluginscript_types();
 
@@ -378,6 +380,7 @@ void unregister_gdnative_types() {
 
 	unregister_pluginscript_types();
 	unregister_nativescript_types();
+	unregister_networked_multiplayer_peer_types();
 	unregister_arvr_types();
 
 	memdelete(GDNativeCallRegistry::singleton);
