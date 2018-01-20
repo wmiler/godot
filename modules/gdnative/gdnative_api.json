@@ -5936,6 +5936,22 @@
           ]
         }
       ]
+    },
+    "networkedmultiplayerpeer": {
+      "type": "NETWORKEDMULTIPLAYERPEER",
+      "version": {
+        "major": 1,
+        "minor": 0
+      },
+      "api": [      
+        {
+          "name": "godot_networked_multiplayer_peer_register_interface",
+          "return_type": "void",
+          "arguments": [
+            ["const godot_networked_multiplayer_peer_interface_gdnative *", "p_interface"]
+          ]
+        }
+      ]
     }
   }
 }
