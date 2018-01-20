@@ -13,6 +13,11 @@ gdn_env.add_source_files(env.modules_sources, "gdnative_library_editor_plugin.cp
 gdn_env.Append(CPPPATH=['#modules/gdnative/include/'])
 
 SConscript("arvr/SCsub")
+SConscript("networked_multiplayer_peer/SCsub")
+SConscript("audio_stream/SCsub")
+SConscript("packet_peer/SCsub")
+SConscript("video_stream/SCsub")
+SConscript("stream_peer/SCsub")
 SConscript("pluginscript/SCsub")
 
 def _spaced(e):
