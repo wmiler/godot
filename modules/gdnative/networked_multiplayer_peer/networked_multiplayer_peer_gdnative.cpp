@@ -28,8 +28,10 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "networked_multiplayer_peer_gdnative.h"
+#include "modules/gdnative/networked_multiplayer_peer/networked_multiplayer_peer_gdnative.h"
 #include "core/io/networked_multiplayer_peer.h"
+#include "modules/gdnative/gdnative.h"
+#include "modules/gdnative/include/networked_multiplayer_peer/networked_multiplayer_peer_interface.h"
 
 NetworkedMultiplayerPeerGDNative::NetworkedMultiplayerPeerGDNative() {
 	data = nullptr;
@@ -53,8 +55,7 @@ void NetworkedMultiplayerPeerGDNative::cleanup() {
 	}
 }
 
-void NetworkedMultiplayerPeerGDNative::set_interface(const godot_networked_multiplayer_peer_interface_gdnative * p_interface)
-{
+void NetworkedMultiplayerPeerGDNative::set_interface(const godot_networked_multiplayer_peer_interface_gdnative *p_interface) {
 	if (interface) {
 		cleanup();
 	}
@@ -64,7 +65,7 @@ void NetworkedMultiplayerPeerGDNative::set_interface(const godot_networked_multi
 	data = interface->constructor((godot_object *)this);
 }
 
-inline int NetworkedMultiplayerPeerGDNative::get_available_packet_count() const {
+int NetworkedMultiplayerPeerGDNative::get_available_packet_count() const {
 	return interface->get_available_packet_count(data);
 }
 
@@ -87,7 +88,7 @@ void NetworkedMultiplayerPeerGDNative::set_transfer_mode(TransferMode p_mode) {
 }
 
 NetworkedMultiplayerPeer::TransferMode NetworkedMultiplayerPeerGDNative::get_transfer_mode() const {
-	return interface->get_transfer_mode(data);
+	return (NetworkedMultiplayerPeer::TransferMode)interface->get_transfer_mode(data);
 }
 
 void NetworkedMultiplayerPeerGDNative::set_target_peer(int p_peer_id) {
@@ -119,5 +120,14 @@ bool NetworkedMultiplayerPeerGDNative::is_refusing_new_connections() const {
 }
 
 NetworkedMultiplayerPeer::ConnectionStatus NetworkedMultiplayerPeerGDNative::get_connection_status() const {
-	return interface->get_connection_status(data);
+	return (NetworkedMultiplayerPeer::ConnectionStatus)interface->get_connection_status(data);
+}
+
+extern "C" {
+
+void GDAPI godot_networked_multiplayer_peer_register_interface(const godot_networked_multiplayer_peer_interface_gdnative *p_interface) {
+	Ref<NetworkedMultiplayerPeerGDNative> new_interface;
+	new_interface.instance();
+	new_interface->set_interface((godot_networked_multiplayer_peer_interface_gdnative *const)p_interface);
+}
 }

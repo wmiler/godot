@@ -31,9 +31,9 @@
 #ifndef NETWORKED_MULTIPLAYER_PEER_GDNATIVE_H
 #define NETWORKED_MULTIPLAYER_PEER_GDNATIVE_H
 
-#include "modules/gdnative/gdnative.h"
-#include "networked_multiplayer_peer_interface.h"
 #include "core/io/networked_multiplayer_peer.h"
+#include "modules/gdnative/gdnative.h"
+#include "modules/gdnative/include/networked_multiplayer_peer/networked_multiplayer_peer_interface.h"
 
 /**
     @authors iFire
@@ -44,12 +44,12 @@
 class NetworkedMultiplayerPeerGDNative : public NetworkedMultiplayerPeer {
 	GDCLASS(NetworkedMultiplayerPeerGDNative, NetworkedMultiplayerPeer)
 
-	godot_networked_multiplayer_peer_interface_gdnative *interface;
+	const godot_networked_multiplayer_peer_interface_gdnative *interface;
 	void *data;
-	
+
 public:
-    NetworkedMultiplayerPeerGDNative();
-    ~NetworkedMultiplayerPeerGDNative();
+	NetworkedMultiplayerPeerGDNative();
+	~NetworkedMultiplayerPeerGDNative();
 
 	void cleanup();
 
@@ -57,8 +57,10 @@ public:
 
 	virtual int get_available_packet_count() const override;
 
-	virtual Error get_packet(const uint8_t **r_buffer, int &r_buffer_size) override;; ///< buffer is GONE after next get_packet
-	virtual Error put_packet(const uint8_t *p_buffer, int p_buffer_size) override;;
+	virtual Error get_packet(const uint8_t **r_buffer, int &r_buffer_size) override;
+
+	///< buffer is GONE after next get_packet
+	virtual Error put_packet(const uint8_t *p_buffer, int p_buffer_size) override;
 
 	virtual int get_max_packet_size(void) const override;
 
