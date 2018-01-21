@@ -47,8 +47,6 @@ Error NetworkedMultiplayerPeerGDNative::get_packet(const uint8_t **r_buffer, int
     return OK;
 }
 
-///< buffer is GONE after next get_packet
-
 Error NetworkedMultiplayerPeerGDNative::put_packet(const uint8_t *p_buffer, int p_buffer_size) {
     return OK;
 }
@@ -94,17 +92,4 @@ NetworkedMultiplayerPeer::ConnectionStatus NetworkedMultiplayerPeerGDNative::get
 }
 
 void NetworkedMultiplayerPeerGDNative::_bind_methods() {
-    ADD_PROPERTY(PropertyInfo(Variant::BOOL, "refuse_new_connections"), "set_refuse_new_connections", "is_refusing_new_connections");
-    ADD_PROPERTY(PropertyInfo(Variant::INT, "transfer_mode", PROPERTY_HINT_ENUM, "Unreliable,Unreliable Ordered,Reliable"), "set_transfer_mode", "get_transfer_mode");
-
-    BIND_ENUM_CONSTANT(TRANSFER_MODE_UNRELIABLE);
-    BIND_ENUM_CONSTANT(TRANSFER_MODE_UNRELIABLE_ORDERED);
-    BIND_ENUM_CONSTANT(TRANSFER_MODE_RELIABLE);
-
-    BIND_ENUM_CONSTANT(CONNECTION_DISCONNECTED);
-    BIND_ENUM_CONSTANT(CONNECTION_CONNECTING);
-    BIND_ENUM_CONSTANT(CONNECTION_CONNECTED);
-
-    BIND_CONSTANT(TARGET_PEER_BROADCAST);
-    BIND_CONSTANT(TARGET_PEER_SERVER);
 }
