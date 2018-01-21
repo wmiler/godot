@@ -31,103 +31,80 @@
 #include "modules/gdnative/networked_multiplayer_peer/networked_multiplayer_peer_gdnative.h"
 #include "core/io/networked_multiplayer_peer.h"
 #include "modules/gdnative/gdnative.h"
-#include "modules/gdnative/include/networked_multiplayer_peer/networked_multiplayer_peer_interface.h"
 
 NetworkedMultiplayerPeerGDNative::NetworkedMultiplayerPeerGDNative() {
-	data = nullptr;
-	interface = nullptr;
 }
 
 NetworkedMultiplayerPeerGDNative::~NetworkedMultiplayerPeerGDNative() {
-	//if (is_initialized()) {
-	//	uninitialize();
-	//};
 
-	// cleanup after ourselves
-	cleanup();
-}
-
-void NetworkedMultiplayerPeerGDNative::cleanup() {
-	if (interface != NULL) {
-		// interface->destructor(data);
-		data = NULL;
-		interface = NULL;
-	}
-}
-
-void NetworkedMultiplayerPeerGDNative::set_interface(const godot_networked_multiplayer_peer_interface_gdnative *p_interface) {
-	if (interface) {
-		cleanup();
-	}
-
-	interface = p_interface;
-
-	data = interface->constructor((godot_object *)this);
 }
 
 int NetworkedMultiplayerPeerGDNative::get_available_packet_count() const {
-	return interface->get_available_packet_count(data);
+    return 0;
 }
 
 Error NetworkedMultiplayerPeerGDNative::get_packet(const uint8_t **r_buffer, int &r_buffer_size) {
-	return (Error)interface->get_packet(data, r_buffer, &r_buffer_size);
+    return OK;
 }
 
 ///< buffer is GONE after next get_packet
 
 Error NetworkedMultiplayerPeerGDNative::put_packet(const uint8_t *p_buffer, int p_buffer_size) {
-	return (Error)interface->put_packet(data, p_buffer, p_buffer_size);
+    return OK;
 }
 
 int NetworkedMultiplayerPeerGDNative::get_max_packet_size(void) const {
-	return interface->get_max_packet_size(data);
+    return 0;
 }
 
 void NetworkedMultiplayerPeerGDNative::set_transfer_mode(TransferMode p_mode) {
-	interface->set_transfer_mode(data, p_mode);
 }
 
 NetworkedMultiplayerPeer::TransferMode NetworkedMultiplayerPeerGDNative::get_transfer_mode() const {
-	return (NetworkedMultiplayerPeer::TransferMode)interface->get_transfer_mode(data);
+    return TransferMode::TRANSFER_MODE_RELIABLE;
 }
 
 void NetworkedMultiplayerPeerGDNative::set_target_peer(int p_peer_id) {
-	interface->set_target_peer(data, p_peer_id);
 }
 
 int NetworkedMultiplayerPeerGDNative::get_packet_peer() const {
-	return interface->get_packet_peer(data);
+    return 0;
 }
 
 bool NetworkedMultiplayerPeerGDNative::is_server() const {
-	return interface->is_server(data);
+    return false;
 }
 
 void NetworkedMultiplayerPeerGDNative::poll() {
-	interface->poll(data);
 }
 
 int NetworkedMultiplayerPeerGDNative::get_unique_id() const {
-	return interface->get_unique_id(data);
+    return 0;
 }
 
 void NetworkedMultiplayerPeerGDNative::set_refuse_new_connections(bool p_enable) {
-	interface->set_refuse_new_connections(data, p_enable);
 }
 
 bool NetworkedMultiplayerPeerGDNative::is_refusing_new_connections() const {
-	return interface->is_refusing_new_connections(data);
+    return false;
 }
 
 NetworkedMultiplayerPeer::ConnectionStatus NetworkedMultiplayerPeerGDNative::get_connection_status() const {
-	return (NetworkedMultiplayerPeer::ConnectionStatus)interface->get_connection_status(data);
+    return ConnectionStatus::CONNECTION_CONNECTED;
 }
 
-extern "C" {
+void NetworkedMultiplayerPeerGDNative::_bind_methods() {
+    ADD_PROPERTY(PropertyInfo(Variant::BOOL, "refuse_new_connections"), "set_refuse_new_connections", "is_refusing_new_connections");
+    ADD_PROPERTY(PropertyInfo(Variant::INT, "transfer_mode", PROPERTY_HINT_ENUM, "Unreliable,Unreliable Ordered,Reliable"), "set_transfer_mode", "get_transfer_mode");
 
-void GDAPI godot_networked_multiplayer_peer_register_interface(const godot_networked_multiplayer_peer_interface_gdnative *p_interface) {
-	Ref<NetworkedMultiplayerPeerGDNative> new_interface;
-	new_interface.instance();
-	new_interface->set_interface((godot_networked_multiplayer_peer_interface_gdnative *const)p_interface);
-}
+    BIND_ENUM_CONSTANT(TRANSFER_MODE_UNRELIABLE);
+    BIND_ENUM_CONSTANT(TRANSFER_MODE_UNRELIABLE_ORDERED);
+    BIND_ENUM_CONSTANT(TRANSFER_MODE_RELIABLE);
+
+    BIND_ENUM_CONSTANT(CONNECTION_DISCONNECTED);
+    BIND_ENUM_CONSTANT(CONNECTION_CONNECTING);
+    BIND_ENUM_CONSTANT(CONNECTION_CONNECTED);
+
+    BIND_CONSTANT(TARGET_PEER_BROADCAST);
+    BIND_CONSTANT(TARGET_PEER_SERVER);
 }

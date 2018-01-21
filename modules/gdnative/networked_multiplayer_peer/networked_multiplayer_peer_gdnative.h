@@ -33,7 +33,6 @@
 
 #include "core/io/networked_multiplayer_peer.h"
 #include "modules/gdnative/gdnative.h"
-#include "modules/gdnative/include/networked_multiplayer_peer/networked_multiplayer_peer_interface.h"
 
 /**
     @authors iFire
@@ -44,15 +43,12 @@
 class NetworkedMultiplayerPeerGDNative : public NetworkedMultiplayerPeer {
 	GDCLASS(NetworkedMultiplayerPeerGDNative, NetworkedMultiplayerPeer)
 
-	const godot_networked_multiplayer_peer_interface_gdnative *interface;
-	void *data;
-	void cleanup();
+protected:
+	static void _bind_methods();
 
 public:
 	NetworkedMultiplayerPeerGDNative();
 	~NetworkedMultiplayerPeerGDNative();
-
-	void set_interface(const godot_networked_multiplayer_peer_interface_gdnative *p_interface);
 
 	virtual int get_available_packet_count() const override;
 
