@@ -46,12 +46,11 @@ class NetworkedMultiplayerPeerGDNative : public NetworkedMultiplayerPeer {
 
 	const godot_networked_multiplayer_peer_interface_gdnative *interface;
 	void *data;
+	void cleanup();
 
 public:
 	NetworkedMultiplayerPeerGDNative();
 	~NetworkedMultiplayerPeerGDNative();
-
-	void cleanup();
 
 	void set_interface(const godot_networked_multiplayer_peer_interface_gdnative *p_interface);
 

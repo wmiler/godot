@@ -45,7 +45,7 @@ typedef struct {
 	godot_error (*put_packet)(const void *, const uint8_t *p_buffer, int p_buffer_size);
 	godot_int (*get_max_packet_size)(const void *);
 	void (*set_transfer_mode)(const void *, int p_mode);
-	int (*get_transfer_mode)(const void *);
+	godot_int(*get_transfer_mode)(const void *);
 	void (*set_target_peer)(const void *, int p_peer_id);
 	godot_int (*get_packet_peer)(const void *);
 	godot_bool (*is_server)(const void *);
@@ -53,7 +53,7 @@ typedef struct {
 	godot_int (*get_unique_id)(const void *);
 	void (*set_refuse_new_connections)(const void *, bool p_enable);
 	godot_bool (*is_refusing_new_connections)(const void *);
-	int (*get_connection_status)(const void *);
+	godot_int(*get_connection_status)(const void *);
 } godot_networked_multiplayer_peer_interface_gdnative;
 
 void GDAPI godot_networked_multiplayer_peer_register_interface(const godot_networked_multiplayer_peer_interface_gdnative *p_interface);
