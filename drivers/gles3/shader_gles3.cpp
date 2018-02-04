@@ -98,10 +98,8 @@ void ShaderGLES3::bind_uniforms() {
 
 		// Force the real_t conversion to float since opengles 3 does not support 64 bit floats.
 		GLfloat uniform[16];
-		for(int a = 0; a < 4; a++)
-		{
-			for(int b = 0; b < 4; b++)
-			{
+		for (int a = 0; a < 4; a++) {
+			for (int b = 0; b < 4; b++) {
 				uniform[a * 4 + b] = static_cast<float>(C->get().matrix[a][b]);
 			}
 		}

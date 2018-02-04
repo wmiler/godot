@@ -162,8 +162,7 @@ void PhysicsShapeQueryParameters::set_margin(real_t p_margin) {
 	margin = p_margin;
 }
 
-real_t PhysicsShapeQueryParameters::get_margin() const
-{
+real_t PhysicsShapeQueryParameters::get_margin() const {
 
 	return margin;
 }
