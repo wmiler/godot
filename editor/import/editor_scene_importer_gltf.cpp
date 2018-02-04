@@ -1900,26 +1900,8 @@ void EditorSceneImporterGLTF::_import_animation(GLTFState &state, AnimationPlaye
 			for (int i = 0; i < track.translation_track.times.size(); i++) {
 				length = MAX(length, track.translation_track.times[i]);
 			}
-		}
-
-		animation->set_length(length);
-
-		if (track.rotation_track.values.size() || track.translation_track.values.size() || track.scale_track.values.size()) {
-			//make transform track
-			int track_idx = animation->get_track_count();
-			animation->add_track(Animation::TYPE_TRANSFORM);
-			animation->track_set_path(track_idx, node_path);
-			//first determine animation length
-
-			real_t increment = 1.0 / float(bake_fps);
-			real_t time = 0.0;
-
-			Vector3 base_pos;
-			Quat base_rot;
-			Vector3 base_scale = Vector3(1, 1, 1);
-
-			if (!track.rotation_track.values.size()) {
-				base_rot = state.nodes[E->key()]->rotation;
+			for (int i = 0; i < track.scale_track.times.size(); i++) {
+				length = MAX(length, track.scale_track.times[i]);
 			}
 
 			for (int i = 0; i < track.weight_tracks.size(); i++) {
