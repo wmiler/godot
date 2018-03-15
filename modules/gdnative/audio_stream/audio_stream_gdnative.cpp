@@ -48,6 +48,7 @@ String AudioStreamGDNative::get_stream_name() const {
 }
 
 void AudioStreamGDNative::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_length"), &AudioStreamGDNative::get_length);
 }
 
 void AudioStreamPlaybackGDNative::_bind_methods() {
@@ -59,7 +60,6 @@ void AudioStreamPlaybackGDNative::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("seek", "time"), &AudioStreamPlaybackGDNative::seek);
 //	TODO bind mix
 //	ClassDB::bind_method(D_METHOD("mix", "buffer", "rate_scale", "frames"), &AudioStreamPlaybackGDNative::mix);
-	ClassDB::bind_method(D_METHOD("get_length"), &AudioStreamGDNative::get_length);
 }
 
 void AudioStreamPlaybackGDNative::start(float p_from_pos)
