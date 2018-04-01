@@ -39,7 +39,6 @@
 #include "arvr/register_types.h"
 #include "audio_stream/register_types.h"
 #include "nativescript/register_types.h"
-#include "networked_multiplayer_peer/register_types.h"
 #include "packet_peer/register_types.h"
 #include "pluginscript/register_types.h"
 #include "stream_peer/register_types.h"
@@ -327,7 +326,6 @@ void register_gdnative_types() {
 	GDNativeCallRegistry::singleton->register_native_call_type("standard_varcall", cb_standard_varcall);
 
 	register_arvr_types();
-	register_networked_multiplayer_peer_types();
 	register_audio_stream_types();
 	register_packet_peer_types();
 	register_video_stream_types();
@@ -392,7 +390,6 @@ void unregister_gdnative_types() {
 	unregister_stream_peer_types();
 	unregister_packet_peer_types();
 	unregister_audio_stream_types();
-	unregister_networked_multiplayer_peer_types();
 	unregister_arvr_types();
 
 	memdelete(GDNativeCallRegistry::singleton);
