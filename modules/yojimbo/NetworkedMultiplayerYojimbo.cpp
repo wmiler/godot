@@ -161,9 +161,9 @@ int NetworkedMultiplayerYojimbo::create_server(int port, int max_clients, int in
 		0x43, 0x71, 0xd6, 0x2c, 0xd1, 0x99, 0x27, 0x26,
 		0x6b, 0x3c, 0x60, 0xf4, 0xb7, 0x15, 0xab, 0xa1 };
 
-	double time = OS::get_singleton()->get_ticks_msec();
-
-	server = new yojimbo::Server(GetDefaultAllocator(), privateKey, yojimbo::Address("127.0.0.1", port), config, adapter, time);
+	const double time = double(OS::get_singleton()->get_ticks_msec()) / 1000;
+	const uint8_t *address = (uint8_t *)bind_ip.c_str();
+	server = new yojimbo::Server(GetDefaultAllocator(), privateKey, yojimbo::Address(address, port), config, adapter, time);
 
 	OS::get_singleton()->print("Starting server (secure)\n");
 	server->Start(max_clients);
@@ -172,6 +172,7 @@ int NetworkedMultiplayerYojimbo::create_server(int port, int max_clients, int in
 }
 
 void NetworkedMultiplayerYojimbo::set_bind_ip(String ip) {
+	bind_ip = ip;
 }
 
 NetworkedMultiplayerPeer::ConnectionStatus NetworkedMultiplayerYojimbo::get_connection_status() const {
@@ -190,14 +191,13 @@ void NetworkedMultiplayerYojimbo::poll() {
 	if (server != nullptr) {
 		server->SendPackets();
 		server->ReceivePackets();
-		server->AdvanceTime(OS::get_singleton()->get_ticks_msec());
+		server->AdvanceTime(double(OS::get_singleton()->get_ticks_msec()) / 1000);
 	}
 	if (client != nullptr) {
 		client->SendPackets();
 		client->ReceivePackets();
-		client->AdvanceTime(OS::get_singleton()->get_ticks_msec());
+		client->AdvanceTime(double(OS::get_singleton()->get_ticks_msec()) / 1000);
 	}
-
 	if (server != nullptr) {
 		if (!server) {
 			return;
