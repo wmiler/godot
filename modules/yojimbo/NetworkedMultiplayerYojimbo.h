@@ -47,6 +47,7 @@ private:
 	uint8_t *client_memory;
 	uint8_t *server_memory;
 	uint8_t *matcher_memory;
+	String bind_ip;
 
 public:
 	NetworkedMultiplayerYojimbo() :
@@ -57,7 +58,8 @@ public:
 			numMessagesSentToServer(0),
 			numMessagesSentToClient(0),
 			numMessagesReceivedFromClient(0),
-			numMessagesReceivedFromServer(0) {
+			numMessagesReceivedFromServer(0),
+			bind_ip("127.0.0.1"){
 	}
 	~NetworkedMultiplayerYojimbo() {
 	}
