@@ -198,6 +198,7 @@ void NetworkedMultiplayerYojimbo::poll() {
 		client->ReceivePackets();
 		client->AdvanceTime(double(OS::get_singleton()->get_ticks_msec()) / 1000);
 	}
+/*
 	if (server != nullptr) {
 		if (!server) {
 			return;
@@ -205,10 +206,6 @@ void NetworkedMultiplayerYojimbo::poll() {
 		if (!client) {
 			return;
 		}
-		if (server->GetNumConnectedClients() == 0) {
-			return;
-		}
-
 		for (size_t i = 0; i < server->GetNumConnectedClients(); i++) {
 			if (!server->IsClientConnected(i)) {
 				continue;
@@ -231,24 +228,24 @@ void NetworkedMultiplayerYojimbo::poll() {
 					for (size_t i = 0; i < blockMessage->GetBlockSize(); i++) {
 						block.append(blockData[i]);
 					}
-					server->ReleaseMessage(client->GetClientIndex(), message);
+					server->ReleaseMessage(i, message);
 					numMessagesReceivedFromClient++;
 					PoolByteArray buffer = PoolByteArray(block);
-					TestBlockMessage *message = (TestBlockMessage *)server->CreateMessage(client->GetClientIndex(), TEST_BLOCK_MESSAGE);
+					TestBlockMessage *message = (TestBlockMessage *)server->CreateMessage(i, TEST_BLOCK_MESSAGE);
 					if (!message) {
 						break;
 					}
 					message->sequence = (uint16_t)numMessagesSentToClient;
 					const int32_t block_size = buffer.size() % MaxBlockSize;
-					uint8_t *block_data = server->AllocateBlock(client->GetClientIndex(), block_size);
+					uint8_t *block_data = server->AllocateBlock(i, block_size);
 					if (!block_data) {
-						server->ReleaseMessage(client->GetClientIndex(), message);
+						server->ReleaseMessage(i, message);
 						return;
 					}
 					for (int j = 0; j < block_size; ++j) {
 						block_data[j] = buffer[j] & 0xff;
 					}
-					server->AttachBlockToMessage(client->GetClientIndex(), message, block_data, block_size);
+					server->AttachBlockToMessage(i, message, block_data, block_size);
 					server->SendMessage(client->GetClientIndex(), RELIABLE_ORDERED_CHANNEL, message);
 					numMessagesSentToClient++;
 					OS::get_singleton()->print("Sent packet from server\n");
@@ -256,7 +253,7 @@ void NetworkedMultiplayerYojimbo::poll() {
 				}
 			}
 		}
-	}
+	}*/
 }
 
 void NetworkedMultiplayerYojimbo::set_target_peer(int id) {
